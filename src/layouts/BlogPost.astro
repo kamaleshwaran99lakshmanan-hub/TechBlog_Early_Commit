@@ -15,53 +15,219 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 	<head>
 		<BaseHead title={title} description={description} />
 		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-  width: 100%;           /* was 720px — change to 100% */
-  max-width: calc(100% - 2em);
-  margin: auto;
-  padding: 1em;
-  color: #e0e0e0;        /* fix text color for dark theme */
+  main {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+article.glass-panel {
+  margin: 100px auto;
+  max-width: 800px;
+  padding: 3rem;
+  background: rgba(221, 221, 223, 0.03);
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+  position: relative;
+  z-index: 1;
+  transform: translateZ(0);
 }
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
+
+  
+
+  .hero-image {
+    width: 100%;
+  }
+
+  .hero-image img {
+    width: 100%;
+    max-height: 380px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .prose {
+    padding: 2.8rem 3rem 3rem;
+    font-size: 1.12rem;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 2;
+    letter-spacing: 0.012em;
+    font-weight: 400;
+  }
+
+  03 {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .date {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #4da6ff;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .date::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1.5px;
+    background: #4da6ff;
+  }
+
+  .title {
+    font-size: clamp(1.2rem, 3vw, 1.7rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.5rem 0;
+    transition: color 0.2s ease;
+  }
+
+
+  .last-updated-on {
+    font-size: 0.74rem;
+    color: rgba(255,255,255,0.3);
+    margin-top: 0.6rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* Body text */
+  .prose p {
+    margin-bottom: 1.6em;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .prose h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-top: 2.5em;
+    margin-bottom: 0.8em;
+    letter-spacing: -0.02em;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .prose h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+    letter-spacing: -0.01em;
+  }
+
+  .prose strong {
+    color: #ffffff;
+    font-weight: 600;
+    background: rgba(77,166,255,0.1);
+    padding: 0.05em 0.25em;
+    border-radius: 3px;
+  }
+
+  .prose em {
+    color: rgba(255,255,255,0.7);
+    font-style: italic;
+  }
+
+  .prose code {
+    font-size: 0.9em;
+    background: rgba(77, 166, 255, 0);
+    border: 1px solid rgba(77, 166, 255, 0);
+    padding: 0.2em 0.55em;
+    border-radius: 6px;
+    color: #93c5fd;
+    letter-spacing: 0.02em;
+  }
+
+  .prose pre {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 1.6rem;
+    overflow-x: auto;
+    margin: 2em 0;
+  }
+
+  .prose pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #e2e8f0;
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+
+  .prose blockquote {
+    border-left: 3px solid #4da6ff;
+    background: rgba(77,166,255,0.06);
+    border-radius: 0 12px 12px 0;
+    padding: 1rem 1.5rem;
+    color: rgba(255,255,255,0.65);
+    font-style: italic;
+    margin: 2em 0;
+  }
+
+  .prose ul, .prose ol {
+  padding-left: 1.6em;
+  margin-bottom: 1.6em;
+  color: rgba(255,255,255,0.85);
+}
+
+  .prose li {
+    margin-bottom: 0.6em;
+    line-height: 1.8;
+  }
+
+  .prose a {
+    color: #60b4ff;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(77,166,255,0.4);
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .prose a:hover {
+    color: #ffffff;
+    border-bottom-color: #ffffff;
+  }
+
+  .prose hr {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin: 2.5em 0;
+  }
+
+  @media (max-width: 640px) {
+    main { padding: 1rem 0.8rem 3rem; }
+    .prose { padding: 1.8rem 1.5rem 2rem; }
+    article.glass-panel { border-radius: 20px; }
+    .title h1 { font-size: 1.5rem; }
+    .prose { font-size: 1rem; }
+  }
+</style>
 	</head>
 
 	<body>
-<video class="earth-video" autoplay loop muted playsinline>
-<source src="/videos/earth_bg.mp4" type="video/mp4" />  </video>		<Header />
+<video class="earth-video" loop muted playsinline>
+  <source src="/videos/earth_bg.mp4" type="video/mp4" />
+</video>		<Header />
 		  <main>
 			<article class="glass-panel">
-				<div class="hero-image">
-				</div>
+			<div class="hero-image">
+  {heroImage && <Image width={1020} height={510} src={heroImage} alt={title} />}
+</div>
 				<div class="prose">
 					<div class="title">
 						<div class="date">
@@ -82,5 +248,36 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			</article>
 		</main>
 		<Footer />
+		<script>
+  const video = document.querySelector('.earth-video');
+
+  let targetTime = 0;
+  let currentTime = 0;
+  const lerpFactor = 0.08;
+
+  video.addEventListener('loadedmetadata', () => {
+    video.pause();
+    video.currentTime = 0;
+
+    const duration = video.duration;
+
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = Math.min(scrolled / totalScroll, 1);
+      targetTime = progress * duration;
+    }, { passive: true });
+
+    function animate() {
+      currentTime += (targetTime - currentTime) * lerpFactor;
+      if (Math.abs(currentTime - video.currentTime) > 0.01) {
+        video.currentTime = currentTime;
+      }
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  });
+</script>
 	</body>
 </html>

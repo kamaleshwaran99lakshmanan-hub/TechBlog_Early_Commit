@@ -14,7 +14,8 @@ body {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) translateZ(0); /* add translateZ(0) */
+  will-change: transform;  /* add this */
   min-width: 100vw;
   min-height: 100vh;
   width: auto;
