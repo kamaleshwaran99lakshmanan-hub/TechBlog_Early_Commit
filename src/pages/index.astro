@@ -10,6 +10,22 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
     <style>
+    html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+main {
+  height: calc(100vh - 60px); /* minus header height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+footer {
+  display: none;
+}
   .home-hero { text-align: left; padding: 3rem 2.5rem; }
   .home-hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 0.3rem; }
   .home-hero h2 { font-size: 1rem; font-weight: 400; color: rgba(255,255,255,0.4); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.8rem; }
