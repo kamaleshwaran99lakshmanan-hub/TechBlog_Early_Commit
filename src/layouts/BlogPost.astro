@@ -252,39 +252,32 @@ article.glass-panel {
   const video = document.querySelector('.earth-video');
 
   let targetTime = 0;
-  let currentTime = 0;
-  const lerpFactor = 0.06;
-  let isSeeking = false;
+  let lastSeekTime = 0;
+  const THROTTLE_MS = 80; // only seek every 80ms max
 
   video.addEventListener('loadedmetadata', () => {
     video.pause();
     video.currentTime = 0;
-
     const duration = video.duration;
-
-    // Guard — mark when video is mid-seek
-    video.addEventListener('seeking', () => { isSeeking = true; });
-    video.addEventListener('seeked', () => { isSeeking = false; });
 
     window.addEventListener('scroll', () => {
       const scrolled = window.scrollY;
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
       const progress = Math.min(scrolled / totalScroll, 1);
       targetTime = progress * duration * 0.6;
-    }, { passive: true });
 
-    function animate() {
-      // Only seek if video is not already seeking
-      if (!isSeeking) {
-        currentTime += (targetTime - currentTime) * lerpFactor;
-        if (Math.abs(currentTime - video.currentTime) > 0.01) {
-          video.currentTime = currentTime;
+      const now = Date.now();
+
+      // Only seek if enough time has passed
+      if (now - lastSeekTime > THROTTLE_MS) {
+        lastSeekTime = now;
+
+        // Only seek if not already seeking
+        if (!video.seeking) {
+          video.currentTime = targetTime;
         }
       }
-      requestAnimationFrame(animate);
-    }
-
-    animate();
+    }, { passive: true });
   });
 </script>
 	</body>
