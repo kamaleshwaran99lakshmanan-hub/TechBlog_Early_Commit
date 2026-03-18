@@ -265,7 +265,7 @@ article.glass-panel {
       const scrolled = window.scrollY;
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
       const progress = Math.min(scrolled / totalScroll, 1);
-      targetTime = progress * duration;
+     targetTime = progress * duration * 0.6; // only use 60% of video length
     }, { passive: true });
 
     function animate() {
