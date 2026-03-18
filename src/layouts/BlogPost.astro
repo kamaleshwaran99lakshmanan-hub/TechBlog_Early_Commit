@@ -248,36 +248,35 @@ article.glass-panel {
 			</article>
 		</main>
 		<Footer />
-		<script>
+	<script>
   const video = document.querySelector('.earth-video');
 
   let targetTime = 0;
-  let lastSeekTime = 0;
-  const THROTTLE_MS = 120; // only seek every 80ms max
+  let currentTime = 0;
+  const lerpFactor = 0.08;
 
   video.addEventListener('loadedmetadata', () => {
     video.pause();
     video.currentTime = 0;
+
     const duration = video.duration;
 
     window.addEventListener('scroll', () => {
       const scrolled = window.scrollY;
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = Math.min(scrolled / totalScroll, 1);
-      targetTime = progress * duration * 0.6;
-
-      const now = Date.now();
-
-      // Only seek if enough time has passed
-      if (now - lastSeekTime > THROTTLE_MS) {
-        lastSeekTime = now;
-
-        // Only seek if not already seeking
-        if (!video.seeking) {
-          video.currentTime = targetTime;
-        }
-      }
+    const progress = Math.min((scrolled / totalScroll) * 0.3, 1); // 0.3 = slower
+      targetTime = progress * duration;
     }, { passive: true });
+
+    function animate() {
+      currentTime += (targetTime - currentTime) * lerpFactor;
+      if (Math.abs(currentTime - video.currentTime) > 0.01) {
+        video.currentTime = currentTime;
+      }
+      requestAnimationFrame(animate);
+    }
+
+    animate();
   });
 </script>
 	</body>
