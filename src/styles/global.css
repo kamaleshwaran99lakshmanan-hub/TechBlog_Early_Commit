@@ -1,0 +1,85 @@
+/* 🌌 The Deep Space Background */
+body {
+  margin: 0;
+  padding: 0;
+  background: #050505; /* Pure black space */
+  color: #e0e0e0; /* Off-white text for readability */
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+
+.earth-video {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100vw;
+  min-height: 100vh;
+  width: auto;
+  height: auto;
+  z-index: -1;
+  object-fit: cover;
+  opacity: 0.5;
+}
+/* 🧊 The Liquid Glass (Glassmorphism) Panel */
+.glass-panel {
+  margin: 100px auto;
+  max-width: 800px;
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.03); /* Barely visible white */
+  backdrop-filter: blur(5px); /* This creates the "liquid" blur effect */
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1); /* The glowing edge */
+  border-radius: 24px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 1;
+}
+
+
+.glass_theme{
+	  background: rgba(255, 255, 255, 0.03); /* Barely visible white */
+  backdrop-filter: blur(16px); /* This creates the "liquid" blur effect */
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1); /* The glowing edge */
+  border-radius: 24px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Make links pop against the dark background */
+a {
+  color: #4da6ff;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+
+/* 📱 MOBILE RESPONSIVE */
+
+/* Glass panel - reduce padding and margin on small screens */
+@media (max-width: 768px) {
+  .glass-panel {
+    margin: 70px 1rem 2rem 1rem;
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .glass_theme {
+    border-radius: 16px;
+  }
+}
+
+/* Video background - on mobile, cover properly */
+@media (max-width: 768px) {
+  .earth-video {
+    width: 100vw;
+    height: 100vh;
+    min-width: unset;
+    min-height: unset;
+    object-fit: cover;
+  }
+}
