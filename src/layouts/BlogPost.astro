@@ -253,7 +253,8 @@ article.glass-panel {
 
   let targetTime = 0;
   let currentTime = 0;
-  const lerpFactor = 0.08;
+  const lerpFactor = 0.06;
+  let isSeeking = false;
 
   video.addEventListener('loadedmetadata', () => {
     video.pause();
@@ -261,17 +262,24 @@ article.glass-panel {
 
     const duration = video.duration;
 
+    // Guard — mark when video is mid-seek
+    video.addEventListener('seeking', () => { isSeeking = true; });
+    video.addEventListener('seeked', () => { isSeeking = false; });
+
     window.addEventListener('scroll', () => {
       const scrolled = window.scrollY;
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
       const progress = Math.min(scrolled / totalScroll, 1);
-     targetTime = progress * duration * 0.6; // only use 60% of video length
+      targetTime = progress * duration * 0.6;
     }, { passive: true });
 
     function animate() {
-      currentTime += (targetTime - currentTime) * lerpFactor;
-      if (Math.abs(currentTime - video.currentTime) > 0.01) {
-        video.currentTime = currentTime;
+      // Only seek if video is not already seeking
+      if (!isSeeking) {
+        currentTime += (targetTime - currentTime) * lerpFactor;
+        if (Math.abs(currentTime - video.currentTime) > 0.01) {
+          video.currentTime = currentTime;
+        }
       }
       requestAnimationFrame(animate);
     }
