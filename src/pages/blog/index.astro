@@ -80,7 +80,7 @@ ul li:last-child {
 	
 	<body>
 	<video class="earth-video" loop muted playsinline>
-  <source src="/videos/earth_bg.mp4" type="video/mp4" />
+  <source src="/videos/earth_bg.webm" type="video/webm" />
 </video>
 		<Header />
 		<main>
@@ -106,35 +106,33 @@ ul li:last-child {
 		</main>
 		<Footer />
 		<script>
-  const video = document.querySelector('.earth-video');
+const video = document.querySelector('.earth-video');
+if (!video) return;
 
   let targetTime = 0;
   let currentTime = 0;
   const lerpFactor = 0.08;
 
-  video.addEventListener('loadedmetadata', () => {
-    video.pause();
-    video.currentTime = 0;
+ video.addEventListener('loadedmetadata', () => {
+  video.pause();
+  video.currentTime = 0;
+  const duration = video.duration;
 
-    const duration = video.duration;
+  let ticking = false; // ← throttle with ticking pattern
 
-    window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY;
-      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = Math.min((scrolled / totalScroll) * 0.3, 1); // 0.3 = slower
-      targetTime = progress * duration;
-    }, { passive: true });
-
-    function animate() {
-      currentTime += (targetTime - currentTime) * lerpFactor;
-      if (Math.abs(currentTime - video.currentTime) > 0.01) {
-        video.currentTime = currentTime;
-      }
-      requestAnimationFrame(animate);
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const scrolled = window.scrollY;
+        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = Math.min((scrolled / totalScroll) * 0.3, 1);
+        video.currentTime = progress * duration;
+        ticking = false;
+      });
+      ticking = true;
     }
-
-    animate();
-  });
+  }, { passive: true });
+});
 </script>
 	</body>
 </html>
