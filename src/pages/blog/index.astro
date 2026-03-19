@@ -114,22 +114,27 @@ ul li:last-child {
     const lerpFactor = 0.08;
     let isAnimating = false;
 
-    function init() {
-      video.pause();
-      video.currentTime = 0;
-      const duration = video.duration;
+   function init() {
+  video.pause();
+  video.currentTime = 0;
+  const duration = video.duration;
+  let lastUpdate = 0; // ← track last update time
 
-      window.addEventListener('scroll', () => {
-        const scrolled = window.scrollY;
-        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = Math.min((scrolled / totalScroll) * 0.3, 1);
-        targetTime = progress * duration;
+  window.addEventListener('scroll', () => {
+    const now = Date.now();
+    if (now - lastUpdate < 50) return; // ← only update every 50ms max
+    lastUpdate = now;
 
-        if (!isAnimating) {
-          isAnimating = true;
-          animate();
-        }
-      }, { passive: true });
+    const scrolled = window.scrollY;
+    const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = Math.min((scrolled / totalScroll) * 0.3, 1);
+    targetTime = progress * duration;
+
+    if (!isAnimating) {
+      isAnimating = true;
+      animate();
+    }
+  }, { passive: true });
 
       function animate() {
         currentTime += (targetTime - currentTime) * lerpFactor;
