@@ -105,30 +105,49 @@ ul li:last-child {
 			</div>
 		</main>
 		<Footer />
-	<script>
+<script>
   const video = document.querySelector('.earth-video');
 
-  if (video) {  // ← wrap everything in if, no return needed
-    let ticking = false;
+  if (video) {
+    let targetTime = 0;
+    let currentTime = 0;
+    const lerpFactor = 0.08;
+    let isAnimating = false;
 
-    video.addEventListener('loadedmetadata', () => {
+    function init() {
       video.pause();
       video.currentTime = 0;
       const duration = video.duration;
 
       window.addEventListener('scroll', () => {
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            const scrolled = window.scrollY;
-            const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = Math.min((scrolled / totalScroll) * 0.3, 1);
-            video.currentTime = progress * duration;
-            ticking = false;
-          });
-          ticking = true;
+        const scrolled = window.scrollY;
+        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = Math.min((scrolled / totalScroll) * 0.3, 1);
+        targetTime = progress * duration;
+
+        if (!isAnimating) {
+          isAnimating = true;
+          animate();
         }
       }, { passive: true });
-    });
+
+      function animate() {
+        currentTime += (targetTime - currentTime) * lerpFactor;
+        if (Math.abs(currentTime - video.currentTime) > 0.001) {
+          video.currentTime = currentTime;
+          requestAnimationFrame(animate);
+        } else {
+          isAnimating = false;
+        }
+      }
+    }
+
+    // ← key fix: if already loaded run directly, else wait
+    if (video.readyState >= 1) {
+      init();
+    } else {
+      video.addEventListener('loadedmetadata', init);
+    }
   }
 </script>
 	</body>

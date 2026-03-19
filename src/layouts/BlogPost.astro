@@ -250,23 +250,12 @@ article.glass-panel {
     let targetTime = 0;
     let currentTime = 0;
     const lerpFactor = 0.08;
-    let isAnimating = false; // ← only run loop when scrolling
+    let isAnimating = false;
 
-    video.addEventListener('loadedmetadata', () => {
+    function init() {
       video.pause();
       video.currentTime = 0;
       const duration = video.duration;
-
-      function animate() {
-        currentTime += (targetTime - currentTime) * lerpFactor;
-
-        if (Math.abs(currentTime - video.currentTime) > 0.001) {
-          video.currentTime = currentTime;
-          requestAnimationFrame(animate); // ← keeps going until settled
-        } else {
-          isAnimating = false; // ← stops loop when video catches up
-        }
-      }
 
       window.addEventListener('scroll', () => {
         const scrolled = window.scrollY;
@@ -276,10 +265,27 @@ article.glass-panel {
 
         if (!isAnimating) {
           isAnimating = true;
-          requestAnimationFrame(animate); // ← only starts when needed
+          animate();
         }
       }, { passive: true });
-    });
+
+      function animate() {
+        currentTime += (targetTime - currentTime) * lerpFactor;
+        if (Math.abs(currentTime - video.currentTime) > 0.001) {
+          video.currentTime = currentTime;
+          requestAnimationFrame(animate);
+        } else {
+          isAnimating = false;
+        }
+      }
+    }
+
+    // ← key fix: if already loaded run directly, else wait
+    if (video.readyState >= 1) {
+      init();
+    } else {
+      video.addEventListener('loadedmetadata', init);
+    }
   }
 </script>
 	</body>
