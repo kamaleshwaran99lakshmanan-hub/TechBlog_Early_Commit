@@ -246,24 +246,37 @@ article.glass-panel {
 <script>
   const video = document.querySelector('.earth-video');
 
-  if (video) {  // ← wrap everything in if, no return needed
-    let ticking = false;
+  if (video) {
+    let targetTime = 0;
+    let currentTime = 0;
+    const lerpFactor = 0.08;
+    let isAnimating = false; // ← only run loop when scrolling
 
     video.addEventListener('loadedmetadata', () => {
       video.pause();
       video.currentTime = 0;
       const duration = video.duration;
 
+      function animate() {
+        currentTime += (targetTime - currentTime) * lerpFactor;
+
+        if (Math.abs(currentTime - video.currentTime) > 0.001) {
+          video.currentTime = currentTime;
+          requestAnimationFrame(animate); // ← keeps going until settled
+        } else {
+          isAnimating = false; // ← stops loop when video catches up
+        }
+      }
+
       window.addEventListener('scroll', () => {
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            const scrolled = window.scrollY;
-            const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = Math.min((scrolled / totalScroll) * 0.3, 1);
-            video.currentTime = progress * duration;
-            ticking = false;
-          });
-          ticking = true;
+        const scrolled = window.scrollY;
+        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = Math.min((scrolled / totalScroll) * 0.3, 1);
+        targetTime = progress * duration;
+
+        if (!isAnimating) {
+          isAnimating = true;
+          requestAnimationFrame(animate); // ← only starts when needed
         }
       }, { passive: true });
     });
