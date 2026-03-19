@@ -105,34 +105,31 @@ ul li:last-child {
 			</div>
 		</main>
 		<Footer />
-		<script>
-const video = document.querySelector('.earth-video');
-if (!video) return;
+	<script>
+  const video = document.querySelector('.earth-video');
 
-  let targetTime = 0;
-  let currentTime = 0;
-  const lerpFactor = 0.08;
+  if (video) {  // ← wrap everything in if, no return needed
+    let ticking = false;
 
- video.addEventListener('loadedmetadata', () => {
-  video.pause();
-  video.currentTime = 0;
-  const duration = video.duration;
+    video.addEventListener('loadedmetadata', () => {
+      video.pause();
+      video.currentTime = 0;
+      const duration = video.duration;
 
-  let ticking = false; // ← throttle with ticking pattern
-
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        const scrolled = window.scrollY;
-        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = Math.min((scrolled / totalScroll) * 0.3, 1);
-        video.currentTime = progress * duration;
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
-});
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const scrolled = window.scrollY;
+            const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = Math.min((scrolled / totalScroll) * 0.3, 1);
+            video.currentTime = progress * duration;
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+    });
+  }
 </script>
 	</body>
 </html>
